@@ -1,9 +1,6 @@
 package com.hci.geoprivacy.geoprivacy;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,11 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.hci.geoprivacy.geoprivacy.MyRecyclerViewAdapter.MyRecyclerViewAdapter;
-
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
@@ -31,19 +25,12 @@ public class MainActivity extends AppCompatActivity
 
 
     MyRecyclerViewAdapter adapter;
-    PackageManager packageManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-         packageManager = this.getPackageManager();
-
-       // List<ApplicationInfo> apps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
