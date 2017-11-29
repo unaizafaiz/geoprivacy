@@ -52,15 +52,17 @@ public class FloatingPromptService extends Service {
         //Specify the chat head position
         params.gravity = Gravity.CENTER | Gravity.RIGHT;        //Initially view will be added to top-left corner
         params.x = 0;
-        params.y = 100;
+        params.y = 120;
 
-        //Add the view to the window
-        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        /*Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
+        */
+
+        //Add the view to the window
+
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        //mWindowManager.getDefaultDisplay()
         mWindowManager.addView(mHeadView, params);
 
         //Set the close button.
@@ -76,8 +78,10 @@ public class FloatingPromptService extends Service {
 
         final ImageView chatHeadImage = (ImageView) mHeadView.findViewById(R.id.head_profile_iv);
         Animation bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+        bounce.setInterpolator(interpolator);
         bounce.setRepeatCount(Animation.INFINITE);
-        bounce.setRepeatMode(Animation.REVERSE);
+        //bounce.setRepeatMode(Animation.REVERSE);
         chatHeadImage.setAnimation(bounce);
 
         chatHeadImage.setOnClickListener(new View.OnClickListener() {
@@ -152,3 +156,17 @@ public class FloatingPromptService extends Service {
     }
 }
 
+class MyBounceInterpolator implements android.view.animation.Interpolator {
+    private double mAmplitude = 1;
+    private double mFrequency = 10;
+
+    MyBounceInterpolator(double amplitude, double frequency) {
+        mAmplitude = amplitude;
+        mFrequency = frequency;
+    }
+
+    public float getInterpolation(float time) {
+        return (float) (-1 * Math.pow(Math.E, -time/ mAmplitude) *
+                Math.cos(mFrequency * time) + 1);
+    }
+}
