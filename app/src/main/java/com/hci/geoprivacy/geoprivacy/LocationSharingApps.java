@@ -16,17 +16,22 @@ import java.util.List;
 
 public class LocationSharingApps {
     private static final String SYSTEM_PACKAGE_NAME = "android";
+    private List<ApplicationInfo> apps;
     PackageManager packageManager;
     Context ct;
 
     public LocationSharingApps(Context ct){
         this.ct=ct;
         packageManager = ct.getPackageManager();
-
+        apps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
     }
 
-    //Create a list of objects that get the app names and image
-    public ArrayList<AppList> prepareData(List<ApplicationInfo> apps){
+    /**
+     *     Create a list of objects that get the app names and image
+     *
+     *    @return An array list of object type AppList
+     **/
+    public ArrayList<AppList> prepareData(){
 
         ArrayList geo_apps = new ArrayList<>();
         for(int i=0;i<apps.size();i++) {

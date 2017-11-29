@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 
          packageManager = this.getPackageManager();
 
-        List<ApplicationInfo> apps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
+       // List<ApplicationInfo> apps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,14 +62,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initViews(apps);
-
-
+        initViews();
     }
 
-    private void initViews(List<ApplicationInfo> apps){
+    private void initViews(){
         LocationSharingApps lc = new LocationSharingApps(this);
-        ArrayList<AppList> appListDetails = lc.prepareData(apps);
+        ArrayList<AppList> appListDetails = lc.prepareData();
         // set up the RecyclerView
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvAppIcons);
         int numberOfColumns = 3;
