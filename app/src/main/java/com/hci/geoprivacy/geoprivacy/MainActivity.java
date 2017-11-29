@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initViews(List<ApplicationInfo> apps){
-        LocationSharingApps lc = new LocationSharingApps(packageManager,this);
+        LocationSharingApps lc = new LocationSharingApps(this);
         ArrayList<AppList> appListDetails = lc.prepareData(apps);
         // set up the RecyclerView
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvAppIcons);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    
+
 
 
 

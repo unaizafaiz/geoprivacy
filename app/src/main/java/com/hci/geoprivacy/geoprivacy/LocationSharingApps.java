@@ -19,9 +19,10 @@ public class LocationSharingApps {
     PackageManager packageManager;
     Context ct;
 
-    public LocationSharingApps(PackageManager packageManager, Context ct){
-        this.packageManager=packageManager;
+    public LocationSharingApps(Context ct){
         this.ct=ct;
+        packageManager = ct.getPackageManager();
+
     }
 
     //Create a list of objects that get the app names and image
