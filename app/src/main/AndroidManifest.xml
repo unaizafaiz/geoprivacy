@@ -19,6 +19,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".floatingWidget.MessageActivity"></activity>
+        <activity android:name=".floatingWidget.FloatingPromptActivity"></activity>
+
+        <receiver android:name=".floatingWidget.PromptAppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_PICK" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/prompt_appwidget_info" />
+        </receiver>
+        <receiver android:name=".floatingWidget.LocationChangedListener"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/prompt_appwidget_info" />
+        </receiver>
+
+        <service android:name=".floatingWidget.FloatingPromptService" />
+
     </application>
 
 </manifest>

@@ -29,36 +29,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MyRecyclerViewAdapter.ItemClickListener {
 
-    private static final String SYSTEM_PACKAGE_NAME = "android";
 
     MyRecyclerViewAdapter adapter;
     PackageManager packageManager;
-
-    private final String android_app_names[] = {
-            "Donut",
-            "Eclair",
-            "Froyo",
-            "Gingerbread",
-            "Honeycomb",
-            "Ice Cream Sandwich",
-            "Jelly Bean",
-            "KitKat",
-            "Lollipop",
-            "Marshmallow"
-    };
-
-    private final String android_image_urls[] = {
-            "http://api.learn2crack.com/android/images/donut.png",
-            "http://api.learn2crack.com/android/images/eclair.png",
-            "http://api.learn2crack.com/android/images/froyo.png",
-            "http://api.learn2crack.com/android/images/ginger.png",
-            "http://api.learn2crack.com/android/images/honey.png",
-            "http://api.learn2crack.com/android/images/icecream.png",
-            "http://api.learn2crack.com/android/images/jellybean.png",
-            "http://api.learn2crack.com/android/images/kitkat.png",
-            "http://api.learn2crack.com/android/images/lollipop.png",
-            "http://api.learn2crack.com/android/images/marshmallow.png"
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +68,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initViews(List<ApplicationInfo> apps){
-        ArrayList<AppList> appListDetails = prepareData(apps);
+        LocationSharingApps lc = new LocationSharingApps(packageManager,this);
+        ArrayList<AppList> appListDetails = lc.prepareData(apps);
         // set up the RecyclerView
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvAppIcons);
         int numberOfColumns = 3;
@@ -106,107 +80,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    //Create a list of objects that get the app names and image
-    private ArrayList<AppList> prepareData(List<ApplicationInfo> apps){
+    
 
-        ArrayList geo_apps = new ArrayList<>();
-        for(int i=0;i<apps.size();i++) {
-            ApplicationInfo p = apps.get(i);
-            try {
-                    //Getting permissions of this app and adding to the list
-                    PackageInfo packageInfo = packageManager.getPackageInfo(p.packageName, PackageManager.GET_PERMISSIONS);
-                    //Get Permissions
-                    String[] requestedPermissions = packageInfo.requestedPermissions;
-                    boolean hasLocationPermission = false;
-                    if(requestedPermissions != null) {
-                        for (int j = 0; j < requestedPermissions.length; j++) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                if (requestedPermissions[j].contains("LOCATION") || requestedPermissions[j].contains("GPS")) {
-                                    if ((packageInfo.requestedPermissionsFlags[j] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0) {
-                                        hasLocationPermission = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    //If the app has location permission then display the list
-                    if (hasLocationPermission) {
-                       if(!isAppPreLoaded(p.packageName)) {
-
-                            AppList appDetails = new AppList();
-                            appDetails.setAppName(p.loadLabel(getPackageManager()).toString());
-                            appDetails.setPackageName(p.packageName);
-                            appDetails.setIcon(p.loadIcon(getPackageManager()));
-                            appDetails.setPermissions(requestedPermissions);
-                            geo_apps.add(appDetails);
-                            Log.d("App Type ", appDetails.getAppName() + " is of type " + (p.FLAG_SYSTEM & ApplicationInfo.FLAG_SYSTEM));
-                       }
-                    }
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        return geo_apps;
-    }
-
-    /**
-     * Match signature of application to identify that if it is signed by system
-     * or not.
-     *
-     * @param packageName
-     *            package of application. Can not be blank.
-     * @return <code>true</code> if application is signed by system certificate,
-     *         otherwise <code>false</code>
-     */
-    public boolean isSystemApp(String packageName) {
-        try {
-            // Get packageinfo for target application
-            PackageInfo targetPkgInfo = packageManager.getPackageInfo(
-                    packageName, PackageManager.GET_SIGNATURES);
-            // Get packageinfo for system package
-            PackageInfo sys = packageManager.getPackageInfo(
-                    SYSTEM_PACKAGE_NAME, PackageManager.GET_SIGNATURES);
-            // Match both packageinfo for there signatures
-            return (targetPkgInfo != null && targetPkgInfo.signatures != null && sys.signatures[0]
-                    .equals(targetPkgInfo.signatures[0]));
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Check if application is preloaded. It also check if the application is
-     * signed by system certificate or not.
-     *
-     * @param packageName
-     *            package name of application. Can not be null.
-     * @return <code>true</code> if package is preloaded and system.
-     */
-    public boolean isAppPreLoaded(String packageName) {
-        if (packageName == null) {
-            throw new IllegalArgumentException("Package name can not be null");
-        }
-        try {
-            ApplicationInfo ai = packageManager.getApplicationInfo(
-                    packageName, 0);
-            // First check if it is preloaded.
-            // If yes then check if it is System app or not.
-            if (ai != null
-                    && (ai.flags & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) != 0) {
-                // Check if signature matches
-                Log.d("Checking if System App", ai.className+"");
-                if (isSystemApp(packageName) == true) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
 
     //On click action
