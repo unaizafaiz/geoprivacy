@@ -10,11 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.hci.geoprivacy.geoprivacy.R;
-import com.hci.geoprivacy.geoprivacy.floatingWidget.FloatingPromptService;
 
 
 public class FloatingPromptActivity extends AppCompatActivity {
@@ -51,7 +49,9 @@ public class FloatingPromptActivity extends AppCompatActivity {
                 finish();
             }
         });*/
+        //ForegroundApps fp = new ForegroundApps(this);
         startService(new Intent(FloatingPromptActivity.this, FloatingPromptService.class));
+
         finish();
     }
 
