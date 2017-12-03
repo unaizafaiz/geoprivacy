@@ -1,7 +1,10 @@
 package com.hci.geoprivacy.geoprivacy;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,7 +19,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.hci.geoprivacy.geoprivacy.MyRecyclerViewAdapter.MyRecyclerViewAdapter;
+import com.hci.geoprivacy.geoprivacy.floatingWidget.FloatingPromptService;
+import com.hci.geoprivacy.geoprivacy.floatingWidget.MessageActivity;
+
 import java.util.ArrayList;
 
 
@@ -72,7 +80,16 @@ public class MainActivity extends AppCompatActivity
     //On click action
     @Override
     public void onItemClick(View view, int position) {
-        Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+        Log.i("TAG", "You clicked  " + adapter.getItem(position));
+        Snackbar.make(view, "Going to app permission page ...", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", adapter.getItem(position), null);
+        intent.setData(uri);
+        startActivity(intent);
+        //Toast.makeText(this, adapter.getItem(position)+"",Toast.LENGTH_LONG);
+
 
     }
 
@@ -122,17 +139,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_permissions) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_tracking) {
+            Intent intent = new Intent(this, MessageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 
