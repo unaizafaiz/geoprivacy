@@ -85,15 +85,19 @@ public class LocationSharingApps {
      */
     private boolean isSystemApp(String packageName) {
         try {
-            // Get packageinfo for target application
-            PackageInfo targetPkgInfo = packageManager.getPackageInfo(
-                    packageName, PackageManager.GET_SIGNATURES);
-            // Get packageinfo for system package
-            PackageInfo sys = packageManager.getPackageInfo(
-                    SYSTEM_PACKAGE_NAME, PackageManager.GET_SIGNATURES);
-            // Match both packageinfo for there signatures
-            return (targetPkgInfo != null && targetPkgInfo.signatures != null && sys.signatures[0]
-                    .equals(targetPkgInfo.signatures[0]));
+            if(!packageName.contains("camera")) {
+                // Get packageinfo for target application
+                PackageInfo targetPkgInfo = packageManager.getPackageInfo(
+                        packageName, PackageManager.GET_SIGNATURES);
+                // Get packageinfo for system package
+                PackageInfo sys = packageManager.getPackageInfo(
+                        SYSTEM_PACKAGE_NAME, PackageManager.GET_SIGNATURES);
+                // Match both packageinfo for there signatures
+                return (targetPkgInfo != null && targetPkgInfo.signatures != null && sys.signatures[0]
+                        .equals(targetPkgInfo.signatures[0]));
+            }else{
+                return false;
+            }
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
